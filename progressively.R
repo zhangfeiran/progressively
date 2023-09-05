@@ -68,7 +68,7 @@ mytxtProgressBar = function(min = 0, max = 1, initial = 0, char = "=", width = N
         pc <- round(100 * (value - min)/(max - min))
         if (nb == .nb && pc == .pc) 
             return()
-        # cat(paste0("\r  |", strrep(" ", nw * width + 6)), file = file) # ???
+        cat(paste0("\r  |", strrep(" ", nw * width + 6)), file = file)
         cat(paste(c("\r  |", rep.int(char, nb), rep.int(" ", 
             nw * (width - nb)), sprintf("| %3d%%", pc)), collapse = ""), 
             file = file)
@@ -84,7 +84,7 @@ mytxtProgressBar = function(min = 0, max = 1, initial = 0, char = "=", width = N
         pc <- round(100 * (value - min)/(max - min))
         if (nb == .nb && pc == .pc) 
             return()
-        # cat(paste0("\r  |", strrep(" ", nw * width + 6)), file = file) # ??? in case return not work?
+        cat(paste0("\r  |", strrep(" ", nw * width + 6)), file = file)
         cat(paste(c("\r  |", rep.int(char, nb), rep.int(" ", 
             nw * (width - nb)), sprintf("| %3d/%d ", value - min, max - min)), collapse = ""), 
             file = file)
