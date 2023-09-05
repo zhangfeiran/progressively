@@ -1,11 +1,13 @@
 # Progressively
 
-Add functions useful for showing progress bar in R packages `purrr` and `furrr`.
+Add functions useful for showing progress bar in R packages `purrr` and `furrr`, using package `progressr`.
 
 Works well in jupyter/jupyterlab where `handlers(global = TRUE)` gives error, and `.progress=TRUE` in purrr cannot delete previous line.
 
 # Usage
-```
+```r
+# install.packages(c('purrr', 'furrr', 'progressr'))
+# mamba install r-purrr r-furrr r-progressr
 source('progressively.R')
 plan(multicore, workers = availableCores()%/%2)
 fvmap(1:200, ~Sys.sleep(.x/100))
