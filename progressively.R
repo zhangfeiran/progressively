@@ -198,10 +198,17 @@ myhandler_txtprogressbar = function(char = "=", style = 3L, file = stderr(), int
         target = target, ...)
 }
 
+
 options(progressr.enable = T)
 options(cli.progress_handlers = "progressr")
 handlers(myhandler_txtprogressbar(style = 4L, file = "", intrusiveness = 1, clear = T))
+c1 = furrr_options(chunk_size = 1)
 
+
+maps = map_vec
+map2s = map2_vec
+imaps=\(...) list_simplify(imap(...), strict=F)
+pmaps = pmap_vec
 
 vmap = \(.x, .f) with_progress(map(.x, .f, .progress = T), delay_stdout = F, delay_terminal = F)
 vmaps = \(.x, .f) with_progress(map_vec(.x, .f, .progress = T), delay_stdout = F, delay_terminal = F)
@@ -213,11 +220,23 @@ vpmap = \(.l, .f) with_progress(pmap(.l, .f, .progress = T), delay_stdout = F, d
 vpmaps = \(.l, .f) with_progress(pmap_vec(.l, .f, .progress = T), delay_stdout = F, delay_terminal = F)
 
 
+fmap=\(.x, .f) if (length(.x)<256) future_map(.x, .f, .options = c1) else future_map(.x, .f)
+fmap2=\(.x, .y, .f) if (length(.x)<256) future_map2(.x, .y,.f, .options = c1) else future_map2(.x, .y, .f)
+fimap=\(.x, .f) if (length(.x)<256) future_imap(.x, .f, .options = c1) else future_imap(.x, .f)
+fpmap=\(.x, .f) if (length(.x[[1]])<256) future_pmap(.x, .f, .options = c1) else future_pmap(.x, .f)
+
+fmaps=\(...) list_simplify(fmap(...), strict=F)
+fmap2s=\(...) list_simplify(fmap2(...), strict=F)
+fimaps=\(...) list_simplify(fimap(...), strict=F)
+fpmaps=\(...) list_simplify(fpmap(...), strict=F)
+
+
+
 fv = \(.x, .f, rp = 1, ff, isp = F) {
     if (isp)
         n = length(.x[[1]]) else n = length(.x)
     if (n < 256) 
-        .options = furrr_options(chunk_size = 1) else .options = furrr_options()
+        .options = c1 else .options = furrr_options()
     with_progress({
         p = progressor(steps = n%/%rp)
         .f = as_mapper(.f)
