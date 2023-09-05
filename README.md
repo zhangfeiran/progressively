@@ -7,6 +7,8 @@ Works well in jupyter/jupyterlab where `handlers(global = TRUE)` gives error, an
 # Usage
 ```
 source('progressively.R')
+fvmap(1:200, ~Sys.sleep(.x/100))
+# |============================================                          | 126/200         
 ```
 
 # Functions
