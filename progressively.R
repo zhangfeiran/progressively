@@ -1,4 +1,5 @@
 library(purrr)
+library(future)
 library(furrr)
 library(progressr)
 
@@ -201,7 +202,8 @@ myhandler_txtprogressbar = function(char = "=", style = 3L, file = stderr(), int
 options(progressr.enable = T)
 options(cli.progress_handlers = "progressr")
 handlers(myhandler_txtprogressbar(style = 4L, file = "", intrusiveness = 1, clear = T))
-c1 = furrr_options(chunk_size = 1)
+.options0 = furrr_options(seed = T)
+.options1 = furrr_options(chunk_size = 1, seed = T)
 
 
 maps = map_vec
@@ -219,10 +221,10 @@ vpmap = \(.l, .f) with_progress(pmap(.l, .f, .progress = T), delay_stdout = F, d
 vpmaps = \(.l, .f) with_progress(pmap_vec(.l, .f, .progress = T), delay_stdout = F, delay_terminal = F)
 
 
-fmap=\(.x, .f) if (length(.x)<256) future_map(.x, .f, .options = c1) else future_map(.x, .f)
-fmap2=\(.x, .y, .f) if (length(.x)<256) future_map2(.x, .y,.f, .options = c1) else future_map2(.x, .y, .f)
-fimap=\(.x, .f) if (length(.x)<256) future_imap(.x, .f, .options = c1) else future_imap(.x, .f)
-fpmap=\(.x, .f) if (length(.x[[1]])<256) future_pmap(.x, .f, .options = c1) else future_pmap(.x, .f)
+fmap=\(.x, .f) if (length(.x)<256) future_map(.x, .f, .options = .options1) else future_map(.x, .f)
+fmap2=\(.x, .y, .f) if (length(.x)<256) future_map2(.x, .y,.f, .options = .options1) else future_map2(.x, .y, .f)
+fimap=\(.x, .f) if (length(.x)<256) future_imap(.x, .f, .options = .options1) else future_imap(.x, .f)
+fpmap=\(.x, .f) if (length(.x[[1]])<256) future_pmap(.x, .f, .options = .options1) else future_pmap(.x, .f)
 
 fmaps=\(...) list_simplify(fmap(...), strict=F)
 fmap2s=\(...) list_simplify(fmap2(...), strict=F)
@@ -235,7 +237,7 @@ fv = \(.x, .f, rp = 1, ff, isp = F) {
     if (isp)
         n = length(.x[[1]]) else n = length(.x)
     if (n < 256) 
-        .options = c1 else .options = furrr_options()
+        .options = .options1 else .options = .options0
     with_progress({
         p = progressor(steps = n%/%rp)
         .f = as_mapper(.f)
@@ -270,14 +272,14 @@ fvmap2 = \(.x, .y, .f, rp = 1, isp = F) {
     }, delay_stdout = F, delay_terminal = F)
 }
 
-fvmap = \(...) fv(..., ff = future_map)
-fvimap = \(...) fv(..., ff = future_imap)
-fvpmap = \(...) fv(..., ff = future_pmap, isp = T)
+fvmap = \(.x, .f, rp = 1) fv(.x, .f, rp = rp, ff = future_map)
+fvimap = \(.x, .f, rp = 1) fv(.x, .f, rp = rp, ff = future_imap)
+fvpmap = \(.x, .f, rp = 1) fv(.x, .f, rp = rp, ff = future_pmap, isp = T)
 
 
-fvmaps=\(...) list_simplify(fvmap(...), strict=F)
-fvmap2s=\(...) list_simplify(fvmap2(...), strict=F)
-fvimaps=\(...) list_simplify(fvimap(...), strict=F)
-fvpmaps=\(...) list_simplify(fvpmap(...), strict=F)
+fvmaps=\(.x, .f, rp = 1) list_simplify(fvmap(.x, .f, rp = rp), strict=F)
+fvmap2s=\(.x, .y, .f, rp = 1) list_simplify(fvmap2(.x, .y, .f, rp = rp), strict=F)
+fvimaps=\(.x, .f, rp = 1) list_simplify(fvimap(.x, .f, rp = rp), strict=F)
+fvpmaps=\(.x, .f, rp = 1) list_simplify(fvpmap(.x, .f, rp = rp), strict=F)
 
 
