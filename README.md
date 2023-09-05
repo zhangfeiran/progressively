@@ -17,8 +17,8 @@ fvmap(1:200, ~Sys.sleep(.x/100))
   - `fmap`, `fmap2`, `fimap` and `fpmap`
 - prefix with "v": add progress bar
   - `vmap`, `vmap2`, `vimap` and `vpmap`
-  - `fmap`, `fmap2`, `fimap` and `fpmap`
-- suffix with "s": simplified result (actually same as "_vec" suffix in `purrr`)
+  - `fvmap`, `fvmap2`, `fvimap` and `fvpmap`
+- suffix with "s": simplified result (actually same as "_vec" suffix in purrr)
   - `maps`, `map2s`, `imaps` and `pmaps`
   - `fmaps`, `fmap2s`, `fimaps` and `fpmaps`
 - prefix with "v" and suffix with "s":
