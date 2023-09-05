@@ -1,7 +1,6 @@
 library(purrr)
 library(furrr)
 library(progressr)
-plan(list(tweak(multicore, workers = availableCores()%/%2), tweak(multicore, workers = 1)))
 
 
 mytxtProgressBar = function(min = 0, max = 1, initial = 0, char = "=", width = NA, 
