@@ -10,8 +10,9 @@ source('progressively.R')
 ```
 
 # Functions
-- base purrr function: `map`, `map2`, `imap` and `pmap`
-- base furrr function: `fmap`, `fmap2`, `fimap` and `fpmap`
+- base purrr and furrr function (abbreved): 
+  - `map`, `map2`, `imap` and `pmap`
+  - `fmap`, `fmap2`, `fimap` and `fpmap`
 - prefix with "v": add progress bar
   - `vmap`, `vmap2`, `vimap` and `vpmap`
   - `fmap`, `fmap2`, `fimap` and `fpmap`
@@ -25,5 +26,5 @@ source('progressively.R')
 # Explanation
 - default handler registered for progressr is `handlers(myhandler_txtprogressbar(style = 4L, file = "", intrusiveness = 1, clear = T))`, whose parameters can be changed.
   - style 4 is a new added one that shows the exact iteration times instead of percent.
-- parameter `rp` in "fv" series: since updating progress bar could dramatically reduce speed especially when `.x` size is large, set "rp" to a higher value allows only updating with a 1/rp possibilities.
-  - (similar to parameter "intrusiveness" in progressr, but faster.)
+- parameter `rp` in "fv" series: since updating progress bar could dramatically reduce speed especially when `.x` size is large, set `rp` to a higher value allows only updating with a 1/rp possibilities.
+  - (similar to parameter `intrusiveness` in progressr, but faster.)
