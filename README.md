@@ -28,3 +28,5 @@ source('progressively.R')
   - style 4 is a new added one that shows the exact iteration times instead of percent.
 - parameter `rp` in "fv" series: since updating progress bar could dramatically reduce speed especially when `.x` size is large, set `rp` to a higher value allows only updating with a 1/rp possibilities.
   - (similar to parameter `intrusiveness` in progressr, but faster.)
+- change the `chunk_size` to 1 if the length of input list is less than 256 in furrr functions, which is beneficial for very varying sizes of input list.
+
